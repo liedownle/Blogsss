@@ -1,0 +1,83 @@
+/* 基础样式 */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  line-height: 1.7;
+  color: #333;
+  background: #fafafa;
+}
+.container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+
+/* 头部 */
+.site-header {
+  background: #24292e;
+  color: #fff;
+  padding: 14px 0;
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { color: #fff; text-decoration: none; font-size: 20px; font-weight: bold; }
+.site-nav a { color: #ddd; text-decoration: none; margin-left: 18px; }
+.site-nav a:hover { color: #fff; }
+
+/* 主内容 */
+main { min-height: 70vh; padding: 30px 0; }
+.post-title { font-size: 26px; }
+.post-meta { color: #888; font-size: 14px; }
+.post-list { list-style: none; padding: 0; }
+.post-list li { padding: 12px 0; border-bottom: 1px solid #eee; }
+.post-list a { color: #0366d6; text-decoration: none; font-size: 17px; }
+.post-list a:hover { text-decoration: underline; }
+.post-date { color: #999; font-size: 13px; margin-left: 8px; }
+.badge {
+  background: #ff9800;
+  color: #fff;
+  font-size: 12px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  margin-left: 8px;
+}
+.lock-icon { font-size: 14px; }
+
+/* 加密提示框 */
+#encrypt-prompt {
+  background: #fffbe6;
+  border: 1px solid #ffe58f;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  margin: 20px 0;
+}
+#encrypt-input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+  margin: 10px 5px;
+}
+#encrypt-submit {
+  padding: 8px 16px;
+  background: #24292e;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#encrypt-submit:hover { background: #0366d6; }
+
+/* 代码块 */
+pre { background: #f6f8fa; padding: 14px; border-radius: 6px; overflow-x: auto; }
+code { background: #f6f8fa; padding: 2px 5px; border-radius: 3px; font-size: 14px; }
+pre code { background: none; padding: 0; }
+
+/* 页脚 */
+.site-footer {
+  background: #24292e;
+  color: #aaa;
+  text-align: center;
+  padding: 18px 0;
+  font-size: 13px;
+}
+
+img { max-width: 100%; }
+blockquote { border-left: 4px solid #dfe2e5; margin: 0; padding-left: 16px; color: #666; }

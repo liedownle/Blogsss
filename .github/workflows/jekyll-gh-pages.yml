@@ -1,0 +1,63 @@
+name: Build and Deploy with Encryption
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Setup Node (用于加密脚本)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build with Jekyll
+        # 将 SECRET_KEY 通过环境变量传给 jekyll 构建（加密脚本会用到）
+        # baseurl 直接使用 _config.yml 中的配置，无需额外传参
+        env:
+          BLOG_SECRET_KEY: ${{ secrets.BLOG_SECRET_KEY }}
+        run: |
+          bundle exec jekyll build
+          echo "构建完成，开始加密..."
+          node scripts/encrypt.js
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

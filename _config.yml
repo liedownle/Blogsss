@@ -1,0 +1,18 @@
+# 博客基础信息
+title: 我的学习博客
+description: 记录我的学习历程与思考
+# 仓库名不是"用户名.github.io"，这里填仓库名（含斜杠）
+baseurl: "/Blogsss"
+# 你的站点地址
+url: "https://liedownle.github.io"
+
+# 作者（姓名请自行修改）
+author:
+  name: 大鹅
+
+# 博客分页（可选，每页文章数）
+paginate: 10
+paginate_path: "/page:num/"
+
+# Markdown 解析
+markdown: kramdown
