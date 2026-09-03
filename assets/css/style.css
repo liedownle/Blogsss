@@ -92,7 +92,7 @@ blockquote { border-left: 4px solid #dfe2e5; margin: 0; padding-left: 16px; colo
 .friend-card {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
   min-width: 220px;
   padding: 14px 16px;
   background: #fff;
@@ -105,13 +105,6 @@ blockquote { border-left: 4px solid #dfe2e5; margin: 0; padding-left: 16px; colo
 .friend-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transform: translateY(-2px);
-}
-.friend-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
 }
 .friend-name {
   font-size: 16px;
