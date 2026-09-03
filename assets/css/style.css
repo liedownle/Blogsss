@@ -81,3 +81,40 @@ pre code { background: none; padding: 0; }
 
 img { max-width: 100%; }
 blockquote { border-left: 4px solid #dfe2e5; margin: 0; padding-left: 16px; color: #666; }
+
+/* 友链卡片 */
+.friend-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 24px 0;
+}
+.friend-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 220px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #333;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.friend-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+.friend-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.friend-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #0366d6;
+}
