@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "ixdzs8.com 正文加载机制分析总结"
-date: 2026-09-210 15:15:00 +0800
-categories: 分类名
+date: 2026-09-10 15:15:00 +0800
+categories: 技术探索
 # 想加密就加下面这一行，不加密就不写
 encrypted: true
 ---
