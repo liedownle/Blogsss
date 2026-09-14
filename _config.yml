@@ -1,5 +1,5 @@
 # 博客基础信息
-title: 我的学习博客
+title: 大鹅的学习博客
 description: 记录我的学习历程与思考
 # 仓库名不是"用户名.github.io"，这里填仓库名（含斜杠）
 baseurl: "/Blogsss"
@@ -16,3 +16,8 @@ paginate_path: "/page:num/"
 
 # Markdown 解析
 markdown: kramdown
+
+# 构建排除项（本地预览日志，不参与构建与监听）
+exclude:
+  - jekyll-serve.log
+  - jekyll-serve.err

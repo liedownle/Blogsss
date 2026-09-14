@@ -51,7 +51,10 @@
    ========================================================================== */
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg);
+}
 
 body {
   margin: 0;
@@ -59,10 +62,21 @@ body {
     "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
   line-height: 1.75;
   color: var(--text);
-  background: var(--bg);
+  background: transparent;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 首页背景图（半透明） */
+.home-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("../images/background_01.png") center / cover no-repeat;
+  opacity: 0.5;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .container {
