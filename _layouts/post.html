@@ -2,14 +2,28 @@
 layout: default
 ---
 <article class="post">
-  <h1 class="post-title">
-    {% if page.encrypted %}<span class="lock-icon">🔒</span>{% endif %}
-    {{ page.title }}
-  </h1>
-  <p class="post-meta">
-    <time>{{ page.date | date: "%Y-%m-%d" }}</time>
-    {% if page.encrypted %} · <span class="badge">加密文章</span>{% endif %}
-  </p>
+  <header class="post-header">
+    <h1 class="post-title">
+      {% if page.encrypted %}<span class="lock-icon">🔒</span>{% endif %}
+      {{ page.title }}
+    </h1>
+    <div class="post-meta">
+      <time class="meta-item">{{ page.date | date: "%Y-%m-%d" }}</time>
+      {% if page.categories %}
+      <span class="meta-sep">·</span>
+      <span class="meta-item">
+        {% for cat in page.categories %}<span class="tag">{{ cat }}</span>{% endfor %}
+      </span>
+      {% endif %}
+      {% if page.encrypted %}
+      <span class="meta-sep">·</span>
+      <span class="badge">🔒 加密文章</span>
+      {% else %}
+      <span class="meta-sep">·</span>
+      <span class="meta-item reading-time">约 <span class="rt-value">--</span> 分钟</span>
+      {% endif %}
+    </div>
+  </header>
 
   <div class="post-content">
     {% if page.encrypted %}
@@ -18,7 +32,7 @@ layout: default
         <p>🔒 这篇文章已加密，请输入密码查看。</p>
         <input type="password" id="encrypt-input" placeholder="请输入密码" autocomplete="off">
         <button id="encrypt-submit">解锁</button>
-        <p id="encrypt-error" style="color:#c00; display:none;">密码错误，请重试。</p>
+        <p id="encrypt-error" style="color:#e5484d; display:none;">密码错误，请重试。</p>
       </div>
       <div id="encrypt-body" style="display:none;">
         <!-- ENCRYPT:START -->

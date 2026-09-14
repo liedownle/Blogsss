@@ -1,10 +1,17 @@
 <header class="site-header">
-  <div class="container">
-    <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+  <div class="container header-inner">
+    <a class="site-title" href="{{ '/' | relative_url }}">
+      <span class="logo">🦢</span>
+      <span>{{ site.title }}</span>
+    </a>
     <nav class="site-nav">
       <a href="{{ '/' | relative_url }}">首页</a>
       <a href="{{ '/about.html' | relative_url }}">关于</a>
       <a href="{{ '/friends.html' | relative_url }}">友链</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" title="切换主题">
+        <span class="icon-sun">☀️</span>
+        <span class="icon-moon">🌙</span>
+      </button>
     </nav>
   </div>
 </header>

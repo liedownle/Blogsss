@@ -4,6 +4,8 @@
   {% include head.html %}
 </head>
 <body>
+  <div class="progress-bar" id="progress-bar"></div>
+
   {% include header.html %}
 
   <main class="container">
@@ -11,5 +13,9 @@
   </main>
 
   {% include footer.html %}
+
+  <button class="back-to-top" id="back-to-top" aria-label="回到顶部" title="回到顶部">↑</button>
+
+  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
 </body>
 </html>
