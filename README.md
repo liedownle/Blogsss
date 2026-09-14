@@ -1,4 +1,4 @@
-# 我的学习博客
+# 大鹅的学习博客
 
 一个基于 **GitHub Pages + Jekyll** 的个人学习博客，支持**博文加密**（AES 真加密）功能。
 
@@ -40,6 +40,7 @@ myblog/
 ├── assets/
 │   ├── css/style.css              # 全站样式
 │   ├── js/encrypt.js              # 前端解密脚本
+│   ├── js/main.js                 # 主题切换、阅读进度等交互脚本
 │   └── images/                    # ★ 放图片的地方
 ├── scripts/encrypt.js             # 构建时加密脚本（不要动）
 └── .github/workflows/
@@ -179,4 +180,4 @@ Windows 的 PowerShell 用中文 commit 信息容易报错，**建议用简短�
 
 ---
 
-*最后更新：2026-09-03*
+*最后更新：2026-09-14*
