@@ -31,7 +31,7 @@ title: 首页
       {% endif %}
 
       {% if post.excerpt %}
-      <p class="post-excerpt">{{ post.excerpt | strip_html | strip_newlines | truncate: 90 }}</p>
+      <p class="post-excerpt">{{ post.excerpt | markdownify | strip_html | strip_newlines | truncate: 90 }}</p>
       {% endif %}
 
       <div class="post-card-meta">

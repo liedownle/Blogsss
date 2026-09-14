@@ -7,8 +7,6 @@ categories: 技术探索
 encrypted: true
 ---
 
-# ixdzs8.com 正文加载机制分析总结
-
 - 分析日期：2026-09-09 下午
 - 目标站点：https://ixdzs8.com/（小说阅读站）
 - 目标书目：https://ixdzs8.com/read/617556/ （第 796 章前后，p796 页面）
