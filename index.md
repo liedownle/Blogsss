@@ -15,29 +15,11 @@ title: 首页
   {% for post in site.posts %}
   <li>
     <a class="post-card" href="{{ post.url | relative_url }}">
-      <div class="post-card-head">
-        <span class="post-title-link">
-          {% if post.encrypted %}<span class="lock-icon">🔒</span>{% endif %}
-          {{ post.title }}
-        </span>
-      </div>
-
-      {% if post.categories %}
-      <div class="post-tags">
-        {% for cat in post.categories %}
-        <span class="tag">{{ cat }}</span>
-        {% endfor %}
-      </div>
-      {% endif %}
-
-      {% if post.excerpt %}
-      <p class="post-excerpt">{{ post.excerpt | markdownify | strip_html | strip_newlines | truncate: 90 }}</p>
-      {% endif %}
-
-      <div class="post-card-meta">
-        <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-        {% if post.encrypted %}<span class="badge">🔒 加密</span>{% endif %}
-      </div>
+      <span class="post-title-link">
+        {% if post.encrypted %}<span class="lock-icon">🔒</span>{% endif %}
+        {{ post.title }}
+      </span>
+      <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
     </a>
   </li>
   {% endfor %}

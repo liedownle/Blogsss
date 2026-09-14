@@ -295,8 +295,11 @@ main {
 .post-list li { margin: 0; }
 
 .post-card {
-  display: block;
-  padding: 22px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -347,7 +350,7 @@ main {
   font-size: 13px;
 }
 
-.post-date { color: var(--text-faint); font-size: 13px; }
+.post-date { color: var(--text-faint); font-size: 13px; flex-shrink: 0; white-space: nowrap; }
 
 /* ==========================================================================
    标签 & 徽章
