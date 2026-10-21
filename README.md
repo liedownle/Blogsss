@@ -6,7 +6,7 @@
 - 代码仓库：`https://github.com/liedownle/Blogsss`
 - 更新方式：
   - 电脑：写好博文 → `git push` → GitHub Actions 自动构建部署 → 1~2 分钟生效
-  - 手机：发一条 Issue + 打 `publish` 标签 → 自动生成文章并部署（见第六章）
+  - 手机：发一条 Issue（标题加 `[post]` 前缀或打 `publish` 标签）→ 自动生成文章并部署（见第六章）
 
 ---
 
@@ -49,7 +49,7 @@ myblog/
 │   └── issue-to-post.js           # 手机发文：issue → 文章
 └── .github/workflows/
     ├── jekyll-gh-pages.yml        # 自动构建部署配置（不要动）
-    └── issue-to-post.yml          # 手机发文：监听 publish 标签
+    └── issue-to-post.yml          # 手机发文：监听 [post] 前缀 / publish 标签
 ```
 
 > **你日常只需要关心 4 个地方**：`_posts/`（写文章）、`assets/images/`（放图片）、`_config.yml`（改配置）、`friends.md`（偶尔加/删友链）。
@@ -182,6 +182,8 @@ Windows 的 PowerShell 用中文 commit 信息容易报错，**建议用简短�
 | 加密文章打不开/乱码 | 密码是否正确；确认 Secrets 里设了 `BLOG_SECRET_KEY` |
 | 想改加密密码 | 改 Secrets 的 `BLOG_SECRET_KEY`，再重新 push 触发构建 |
 | 中文 commit 报错 | 改用英文 commit 信息 |
+| 手机发的 issue 没变成文章 | 确认 `issue-to-post.yml` 已 push 到 `main`；标题要带 `[post]` 前缀或确实打了 `publish` 标签；再看 Actions 里 **Issue to Post** 的日志 |
+| 手机文章里的图片不显示 | 正常会自动下载到 `assets/images/`；若日志出现「下载失败，保留原链接」，说明该附件链接已失效，重新插图再发一次 |
 
 ---
 
