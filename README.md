@@ -113,6 +113,8 @@ git commit -m "add post: 标题"
 git push
 ```
 
+> 如果 `git push` 报 `! [rejected] ... fetch first`，说明远端多了你本地没有的提交（常见于手机上刚发过 issue），先 `git pull --rebase origin main` 再 `git push`，详见 5.1。
+
 **第 4 步：等待部署**
 推送后 1~2 分钟，GitHub Actions 自动构建部署。打开仓库 **Actions** 页，绿色 ✓ 即成功。刷新博客即可看到新文章。
 
@@ -184,6 +186,33 @@ Windows 的 PowerShell 用中文 commit 信息容易报错，**建议用简短�
 | 中文 commit 报错 | 改用英文 commit 信息 |
 | 手机发的 issue 没变成文章 | 确认 `issue-to-post.yml` 已 push 到 `main`；标题要带 `[post]` 前缀或确实打了 `publish` 标签；再看 Actions 里 **Issue to Post** 的日志 |
 | 手机文章里的图片不显示 | 正常会自动下载到 `assets/images/`；若日志出现「下载失败，保留原链接」，说明该附件链接已失效，重新插图再发一次 |
+| push 被拒（`! [rejected] ... fetch first`） | 远端有你本地没有的提交（多半是手机发文工作流自动生成的 commit）：先 `git pull --rebase origin main`，再 `git push`，详见 5.1 |
+
+### 5.1 push 被拒（fetch first）的标准处理
+
+**现象**：
+
+```
+! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'https://github.com/liedownle/Blogsss.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally.
+```
+
+**原因**：远端分支上多了本地还没有的提交。最常见的情况就是——你在**手机上发了 issue**，工作流自动生成了 `post: from issue #N` 这样的提交并推到了 `main`；而本地还停在旧位置，于是 Git 拒绝覆盖。
+
+**处理**（在 `myblog` 目录执行）：
+
+```powershell
+git pull --rebase origin main
+git push
+```
+
+`--rebase` 会把你的本地提交“接”到远端最新提交后面，历史保持一条直线，不会产生多余的 merge 提交。
+
+**⚠️ 不要做的事**：不要用 `git push -f` / `--force`。那会把远端自动生成的文章提交直接冲掉，手机上发的文章就丢了。
+
+如果 `git pull --rebase` 报冲突（conflict），说明线上和本地改到了同一行，打开冲突文件保留正确内容，`git add` 后再 `git rebase --continue`。
 
 ---
 
@@ -231,7 +260,8 @@ date: 2026-10-21 10:00:00 +0800
 - 文章头部会写入 `issue_number: N`，编辑 issue 后重新打标签会**更新同一篇**，不会出重复文章；
 - 删除 issue 不会删除文章，删文仍需到 `_posts/` 删文件；
 - 用标签方式时，**仓库里必须先有 `publish` 标签**（`https://github.com/liedownle/Blogsss/labels/new` 新建，只需一次，App 里建不了标签）；
-- 手机 App 里给 issue 加标签的入口：Issue 页面**右下角的黑色 ⓘ 按钮** → Labels。
+- 手机 App 里给 issue 加标签的入口：Issue 页面**右下角的黑色 ⓘ 按钮** → Labels；
+- 打开 `labels/new` 只看到标签列表、没有 **New label** 按钮 → **说明该浏览器没登录**（或登录成了别的账号），先在 `https://github.com` 登录 `liedownle` 再试。
 
 ---
 
