@@ -1,0 +1,78 @@
+name: Issue to Post
+
+# 手机上发一条 issue 即可自动发布成博文，两种触发方式任选其一：
+#   1）给 issue 打上 publish 标签
+#   2）标题以 [post] 开头（仅限仓库所有者本人创建/编辑的 issue）
+on:
+  issues:
+    types: [opened, labeled, edited]
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: "issue-to-post-${{ github.event.issue.number }}"
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    # 发布条件：带 publish 标签，或「本人 + 标题以 [post] 开头」——陌生人的 issue 不会发布
+    if: "(!github.event.issue.pull_request) && (contains(github.event.issue.labels.*.name, 'publish') || (startsWith(github.event.issue.title, '[post]') && github.event.issue.user.login == github.repository_owner))"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate post from issue
+        id: gen
+        run: node scripts/issue-to-post.js
+
+      - name: Commit and push
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A _posts assets/images
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "没有变化，跳过提交"
+          else
+            git commit -m "post: from issue #${{ github.event.issue.number }}"
+            git pull --rebase --autostash origin main
+            git push origin HEAD:main
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # GITHUB_TOKEN 推送的 commit 不会自动触发其他 workflow，需手动派发部署
+      - name: Trigger deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run jekyll-gh-pages.yml --ref main
+
+      - name: Reply in issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JOB_STATUS: ${{ job.status }}
+          CHANGED: ${{ steps.commit.outputs.changed }}
+          POST_FILE: ${{ steps.gen.outputs.file }}
+        run: |
+          if [ "$JOB_STATUS" != "success" ]; then
+            MSG="❌ 自动发布失败，请到仓库 Actions 页面查看日志。"
+          elif [ "$CHANGED" = "true" ]; then
+            MSG="✅ 已发布：$POST_FILE（部署已触发，约 1~2 分钟后生效）"
+          else
+            MSG="ℹ️ 文章内容没有变化，无需重新发布。"
+          fi
+          gh issue comment ${{ github.event.issue.number }} --body "$MSG"

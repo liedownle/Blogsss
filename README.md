@@ -4,7 +4,9 @@
 
 - 站点地址：`https://liedownle.github.io/Blogsss/`
 - 代码仓库：`https://github.com/liedownle/Blogsss`
-- 更新方式：写好博文 → `git push` → GitHub Actions 自动构建部署 → 1~2 分钟生效
+- 更新方式：
+  - 电脑：写好博文 → `git push` → GitHub Actions 自动构建部署 → 1~2 分钟生效
+  - 手机：发一条 Issue + 打 `publish` 标签 → 自动生成文章并部署（见第六章）
 
 ---
 
@@ -42,9 +44,12 @@ myblog/
 │   ├── js/encrypt.js              # 前端解密脚本
 │   ├── js/main.js                 # 主题切换、阅读进度等交互脚本
 │   └── images/                    # ★ 放图片的地方
-├── scripts/encrypt.js             # 构建时加密脚本（不要动）
+├── scripts/
+│   ├── encrypt.js                 # 构建时加密脚本（不要动）
+│   └── issue-to-post.js           # 手机发文：issue → 文章
 └── .github/workflows/
-    └── jekyll-gh-pages.yml        # 自动构建部署配置（不要动）
+    ├── jekyll-gh-pages.yml        # 自动构建部署配置（不要动）
+    └── issue-to-post.yml          # 手机发文：监听 publish 标签
 ```
 
 > **你日常只需要关心 4 个地方**：`_posts/`（写文章）、`assets/images/`（放图片）、`_config.yml`（改配置）、`friends.md`（偶尔加/删友链）。
@@ -180,4 +185,52 @@ Windows 的 PowerShell 用中文 commit 信息容易报错，**建议用简短�
 
 ---
 
-*最后更新：2026-09-14*
+## 六、手机更新博客（Issue 自动发文）
+
+不想开电脑时，用手机也能发文：**发一条 Issue → 打上 `publish` 标签（或标题加 `[post]`）→ 自动生成文章并部署**。
+完整操作步骤见 `操作手册.md` 第十一章，这里只说原理与要点。
+
+### 6.1 涉及的文件
+
+| 文件 | 作用 |
+|---|---|
+| `.github/workflows/issue-to-post.yml` | 监听 issue 的 `opened` / `labeled` / `edited` 事件，满足发布条件时执行 |
+| `scripts/issue-to-post.js` | 把 issue 标题/正文转成 `_posts/年-月-日-标题.md`，下载正文里的图片到 `assets/images/` |
+
+### 6.2 工作原理
+
+1. 你在手机上新建 issue，标题当文章标题、正文当 Markdown 内容；
+2. 满足任一条件即发布（两者都能防陌生人写入）：
+   - issue 被加上 `publish` 标签（标签只有仓库协作者能加）；
+   - 或标题以 `[post]` 开头**且** issue 作者是仓库所有者（`github.repository_owner`），发布时自动去掉前缀；
+3. Actions 运行 `scripts/issue-to-post.js`：生成/更新文章 → commit 并 push 到 `main`；
+4. 由于 `GITHUB_TOKEN` 推送的 commit 不会自动触发其他 workflow，工作流最后会用 `gh workflow run` **手动派发** `jekyll-gh-pages.yml`，由它完成构建 + 加密 + 部署；
+5. 在 issue 里回复结果（✅ 已发布 / ℹ️ 无变化 / ❌ 失败）。
+
+### 6.3 可以控制的字段
+
+在 issue 正文最开头写 front matter，会合并进文章头部（不写则 `categories: 随笔`、不加密）：
+
+```markdown
+---
+categories: 技术探索
+encrypted: true
+date: 2026-10-21 10:00:00 +0800
+---
+
+正文……
+```
+
+`layout`、`title`、`date`、`categories` 已在 front matter 里写过时，脚本不会再重复生成。
+
+### 6.4 几个注意点
+
+- 正文里粘贴的 GitHub 附件图片会被**下载到 `assets/images/`** 并改写成 `/Blogsss/assets/images/...`，不用手动加前缀；
+- 文章头部会写入 `issue_number: N`，编辑 issue 后重新打标签会**更新同一篇**，不会出重复文章；
+- 删除 issue 不会删除文章，删文仍需到 `_posts/` 删文件；
+- 用标签方式时，**仓库里必须先有 `publish` 标签**（`https://github.com/liedownle/Blogsss/labels/new` 新建，只需一次，App 里建不了标签）；
+- 手机 App 里给 issue 加标签的入口：Issue 页面**右下角的黑色 ⓘ 按钮** → Labels。
+
+---
+
+*最后更新：2026-10-21*
